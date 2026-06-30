@@ -1,41 +1,56 @@
 <x-guest-layout>
-    <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#2e1065] via-[#4c1d95] to-[#7c3aed] p-6">
-        <div class="w-full max-w-lg bg-white/10 backdrop-blur-lg rounded-3xl p-10 border border-white/20 shadow-2xl relative overflow-hidden">
+    <div class="bg-[#5c20a6] shadow-2xl rounded-2xl p-8 flex flex-col items-center border border-purple-500/30">
+        
+        <div class="flex flex-col items-center mb-6 w-full">
+            <img src="{{ asset('images/logo_polis_bantuan.jpg') }}" alt="Polis Bantuan UiTM" class="h-28 mb-4 object-contain drop-shadow-md">
             
-            <div class="absolute -top-6 -right-6 w-32 h-32 bg-yellow-400/10 rounded-full flex items-center justify-center blur-2xl"></div>
-
-            <div class="text-center mb-10">
-                <i class="fas fa-user-shield text-5xl text-yellow-400 mb-4"></i>
-                <h2 class="text-3xl font-bold text-white">Create Account</h2>
-                <p class="text-purple-200">Join the UiTMGuard community</p>
-            </div>
-
-            <form method="POST" action="{{ route('register') }}" class="space-y-5">
-                @csrf
-                <div class="grid grid-cols-1 gap-5">
-                    <div>
-                        <input type="text" name="name" placeholder="Full Name" required class="w-full bg-white/5 border border-purple-400/30 rounded-xl py-4 px-6 text-white placeholder-purple-300 focus:ring-2 focus:ring-yellow-400">
-                    </div>
-                    <div>
-                        <input type="email" name="email" placeholder="UiTM Email Address" required class="w-full bg-white/5 border border-purple-400/30 rounded-xl py-4 px-6 text-white placeholder-purple-300 focus:ring-2 focus:ring-yellow-400">
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <input type="password" name="password" placeholder="Password" required class="w-full bg-white/5 border border-purple-400/30 rounded-xl py-4 px-6 text-white placeholder-purple-300 focus:ring-2 focus:ring-yellow-400">
-                    <input type="password" name="password_confirmation" placeholder="Confirm Password" required class="w-full bg-white/5 border border-purple-400/30 rounded-xl py-4 px-6 text-white placeholder-purple-300 focus:ring-2 focus:ring-yellow-400">
-                </div>
-
-                <div class="pt-4">
-                    <button type="submit" class="w-full bg-yellow-400 text-purple-900 font-bold py-4 rounded-xl shadow-xl hover:bg-yellow-300 transition-all uppercase tracking-widest">
-                        Create Account
-                    </button>
-                </div>
-            </form>
-
-            <div class="mt-8 text-center text-sm text-purple-200">
-                Already registered? <a href="{{ route('login') }}" class="text-yellow-400 font-bold hover:underline">Log in here</a>
+            <h2 class="text-[1.1rem] font-medium text-white text-center tracking-wide">Join the Auxiliary Police community</h2>
+            
+            <div class="text-[#ffcc00] mt-3">
+                <i class="fa-solid fa-user-shield text-3xl drop-shadow"></i>
             </div>
         </div>
+
+        <form method="POST" action="{{ route('register') }}" class="w-full">
+            @csrf
+
+            <div class="border border-purple-400/40 rounded-xl overflow-hidden mb-6 shadow-inner">
+                
+                <div class="relative bg-[#7138b8]/80 border-b border-purple-400/30">
+                    <input id="name" type="text" name="name" value="{{ old('name') }}" required autofocus
+                        class="block w-full border-0 px-5 py-4 bg-transparent focus:ring-2 focus:ring-[#ffcc00] focus:outline-none text-white placeholder-purple-200/70 text-sm"
+                        placeholder="Full Name">
+                </div>
+                
+                <div class="relative bg-[#7138b8]/60 border-b border-purple-400/30">
+                    <input id="email" type="email" name="email" value="{{ old('email') }}" required
+                        class="block w-full border-0 px-5 py-4 bg-transparent focus:ring-2 focus:ring-[#ffcc00] focus:outline-none text-white placeholder-purple-200/50 text-sm"
+                        placeholder="email">
+                </div>
+                
+                <div class="relative bg-[#7138b8]/60 border-b border-purple-400/30">
+                    <input id="password" type="password" name="password" required autocomplete="new-password"
+                        class="block w-full border-0 px-5 py-4 bg-transparent focus:ring-2 focus:ring-[#ffcc00] focus:outline-none text-white placeholder-purple-200/50 text-sm tracking-widest font-bold"
+                        placeholder="Password">
+                </div>
+                
+                <div class="relative bg-[#7138b8]/80">
+                    <input id="password_confirmation" type="password" name="password_confirmation" required autocomplete="new-password"
+                        class="block w-full border-0 px-5 py-4 bg-transparent focus:ring-2 focus:ring-[#ffcc00] focus:outline-none text-white placeholder-purple-200/70 text-sm"
+                        placeholder="Confirm Password">
+                </div>
+            </div>
+
+            <div>
+                <button type="submit" class="w-full bg-[#ffcc00] hover:bg-yellow-400 text-[#5c20a6] font-black py-3 px-4 rounded-xl shadow-md transition-all duration-200 uppercase tracking-wider text-sm cursor-pointer">
+                    Register Account
+                </button>
+            </div>
+        </form>
+
+        <div class="mt-6 text-center text-sm text-purple-200">
+            Already registered? <a href="{{ route('login') }}" class="text-[#ffcc00] font-bold hover:underline">Log in here</a>
+        </div>
+        
     </div>
 </x-guest-layout>

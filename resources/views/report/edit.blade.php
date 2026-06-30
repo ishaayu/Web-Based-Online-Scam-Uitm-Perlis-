@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Report | UiTMGuard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style> body { font-family: 'Outfit', sans-serif; } </style>
+    @include('partials.head-assets')
 </head>
-<body class="bg-gray-100 flex h-screen items-center justify-center">
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
     <div class="bg-white w-full max-w-lg rounded-2xl shadow-xl p-8">
         <h2 class="text-2xl font-bold text-gray-800 mb-6">Edit Report</h2>
         <form action="{{ route('report.update', $report->id) }}" method="POST" enctype="multipart/form-data">

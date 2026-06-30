@@ -3,140 +3,213 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to UiTMGuard | Secure Campus Portal</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style> body { font-family: 'Outfit', sans-serif; } </style>
+    <title>UiTM Auxiliary Police - Scam Reporting Portal</title>
+    @include('partials.head-assets')
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 </head>
-<body class="bg-gray-50 text-gray-900">
+<body class="bg-slate-50 font-sans antialiased selection:bg-amber-500 selection:text-white">
 
-    <nav class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-100">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="bg-purple-900 p-2 rounded-lg">
-                    <i class="fas fa-shield-alt text-yellow-400 text-xl"></i>
-                </div>
-                <span class="text-2xl font-bold text-purple-900 tracking-tight">UiTM<span class="text-yellow-600">Guard</span></span>
-            </div>
+    <div class="bg-amber-500 text-slate-900 text-center py-2 text-xs font-bold tracking-wider uppercase">
+        Official Campus Security Initiative &bull; UiTM Cawangan Perlis
+    </div>
+
+    <nav class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:h-20 flex flex-col sm:flex-row justify-between items-center gap-4">
             
-            <div class="flex items-center gap-4">
-                @if (Route::has('login'))
-                    @auth
-                        <a href="{{ url('/dashboard') }}" class="text-purple-900 font-semibold hover:text-purple-700">Go to Dashboard</a>
-                    @else
-                        <a href="{{ route('login') }}" class="px-6 py-2.5 text-purple-900 font-bold hover:bg-purple-50 rounded-xl transition-all">Login</a>
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="px-6 py-2.5 bg-purple-900 text-white font-bold rounded-xl shadow-lg shadow-purple-200 hover:bg-purple-800 transition-all">Register</a>
-                        @endif
-                    @endauth
-                @endif
+            <a href="/" class="flex items-center space-x-3 group">
+                <div class="bg-purple-950 text-amber-400 p-2 rounded-xl shadow-inner font-black text-xl tracking-tight transition-transform group-hover:scale-105">
+                    PB
+                </div>
+                <div>
+                    <span class="text-lg font-extrabold text-purple-950 tracking-tight block leading-none">POLIS BANTUAN</span>
+                    <span class="text-xs font-semibold text-slate-400 tracking-wider uppercase">UiTM Perlis</span>
+                </div>
+            </a>
+            
+            <div class="flex flex-col sm:flex-row items-center gap-3 sm:gap-6 w-full sm:w-auto">
+                @guest
+                    <a href="{{ route('login') }}" class="text-sm font-semibold text-slate-600 hover:text-purple-950 transition">
+                        Login
+                    </a>
+                    <a href="{{ route('register') }}" class="bg-purple-950 hover:bg-purple-900 text-white text-sm font-bold px-5 py-2.5 rounded-xl shadow-md hover:shadow-lg transition-all duration-200 text-center w-full sm:w-auto">
+                        Register Account
+                    </a>
+                @endguest
+
+                @auth
+                    <a href="{{ route('dashboard') }}" class="text-sm font-semibold text-slate-600 hover:text-purple-950 transition">
+                        Dashboard
+                    </a>
+                    <a href="{{ route('report.index') }}" class="text-sm font-semibold text-slate-600 hover:text-purple-950 transition">
+                        My Reports
+                    </a>
+                    
+                    <form method="POST" action="{{ route('logout') }}" class="inline w-full sm:w-auto">
+                        @csrf
+                        <button type="submit" class="text-sm font-semibold text-red-600 hover:text-red-800 transition cursor-pointer w-full sm:w-auto">
+                            Logout
+                        </button>
+                    </form>
+                @endauth
             </div>
         </div>
     </nav>
 
-    <header class="relative bg-purple-900 py-24 overflow-hidden">
-        <div class="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-96 h-96 bg-yellow-400/10 rounded-full blur-3xl"></div>
-        <div class="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/4 w-96 h-96 bg-purple-400/10 rounded-full blur-3xl"></div>
-
-        <div class="max-w-7xl mx-auto px-6 relative z-10 grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-                <span class="inline-block px-4 py-1.5 bg-yellow-400 text-purple-900 rounded-full text-xs font-bold uppercase tracking-widest mb-6">Campus Security First</span>
-                <h1 class="text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
-                    Reporting Scams <br> <span class="text-yellow-400">Made Simple.</span>
+    <header class="relative bg-gradient-to-br from-purple-950 via-purple-900 to-indigo-950 text-white overflow-hidden py-16 lg:py-24">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-amber-500/10 via-transparent to-transparent"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
+            <div class="lg:col-span-7 space-y-6">
+                <span class="inline-flex items-center gap-1.5 bg-amber-400/10 border border-amber-400/20 text-amber-400 text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider">
+                    <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span> Campus Security First
+                </span>
+                
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-tight">
+                    Reporting Scams <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-yellow-300">Made Simple.</span>
                 </h1>
-                <p class="text-purple-100 text-lg mb-10 max-w-lg leading-relaxed">
-                    UiTMGuard is a dedicated platform for students to report suspicious activities, phishing, and scams within the campus community. Stay safe, stay guarded.
+                
+                <p class="text-slate-300 text-base sm:text-lg max-w-xl leading-relaxed">
+                    The Auxiliary Police Scam Support Portal is a dedicated environment for students to report cyber fraud, phishing tactics, and suspicious financial activities safely within our campus network.
                 </p>
-                <div class="flex flex-wrap gap-4">
-                    <a href="{{ route('register') }}" class="px-8 py-4 bg-yellow-400 text-purple-900 font-bold rounded-2xl shadow-xl hover:bg-yellow-300 transition-all flex items-center gap-3">
-                        Get Started <i class="fas fa-arrow-right"></i>
+                
+                <div class="pt-2 flex flex-col sm:flex-row gap-4">
+                    <a href="{{ route('report.create') }}" class="bg-amber-400 hover:bg-amber-300 text-purple-950 font-bold px-8 py-4 rounded-xl shadow-lg shadow-amber-500/10 flex items-center justify-center gap-2 group transition-all duration-200">
+                        File a Report 
+                        <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"></path>
+                        </svg>
                     </a>
                 </div>
             </div>
-            <div class="hidden lg:block">
-                <div class="relative">
-                    <div class="absolute inset-0 bg-yellow-400 rounded-3xl rotate-3"></div>
-                    <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800" alt="Security" class="relative rounded-3xl shadow-2xl grayscale hover:grayscale-0 transition-all duration-700">
+
+            <div class="lg:col-span-5 relative">
+                <div class="absolute -inset-1 bg-gradient-to-r from-amber-400 to-purple-600 rounded-2xl blur-xl opacity-30 animate-pulse"></div>
+                <div class="relative bg-slate-900 border border-white/10 rounded-2xl overflow-hidden shadow-2xl aspect-video lg:aspect-square flex items-center justify-center">
+                    <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=800&q=80" alt="Security Grid Interface" class="object-cover w-full h-full mix-blend-luminosity opacity-40">
+                    <div class="absolute inset-0 bg-gradient-to-t from-purple-950 via-transparent to-transparent"></div>
+                    <div class="absolute bottom-6 left-6 right-6 p-4 bg-white/5 backdrop-blur-md rounded-xl border border-white/10">
+                        <p class="text-xs text-amber-400 font-bold tracking-wider uppercase mb-1">Live Tracking</p>
+                        <p class="text-sm font-medium text-slate-200">Securing over 10,000+ active students across campus grounds.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </header>
 
-    <section class="max-w-7xl mx-auto px-6 -mt-16 relative z-20">
-        <div class="grid md:grid-cols-3 gap-6">
-            <div class="bg-white p-8 rounded-3xl shadow-xl border border-gray-100 flex items-center gap-6">
-                <div class="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center text-purple-600 text-2xl">
-                    <i class="fas fa-user-shield"></i>
+    <div class="max-w-7xl mx-auto px-6 -mt-10 relative z-20 mb-12">
+        <div class="bg-white rounded-2xl shadow-xl border border-slate-100 p-8 flex flex-col md:flex-row items-center justify-around divide-y md:divide-y-0 md:divide-x divide-slate-100">
+            <div class="text-center p-4 w-full">
+                <div class="flex items-center justify-center gap-2 mb-1">
+                    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                    <p class="text-4xl font-black text-purple-950">{{ $resolvedCases ?? 0 }}</p>
                 </div>
-                <div>
-                    <h3 class="text-2xl font-bold text-gray-900">100%</h3>
-                    <p class="text-gray-500 text-sm">Secure Reporting</p>
-                </div>
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Cases Resolved</p>
             </div>
-            <div class="bg-white p-8 rounded-3xl shadow-xl border border-gray-100 flex items-center gap-6">
-                <div class="w-16 h-16 bg-yellow-100 rounded-2xl flex items-center justify-center text-yellow-600 text-2xl">
-                    <i class="fas fa-bolt"></i>
-                </div>
-                <div>
-                    <h3 class="text-2xl font-bold text-gray-900">Fast</h3>
-                    <p class="text-gray-500 text-sm">Admin Response</p>
-                </div>
+            
+            <div class="text-center p-4 w-full">
+                <p class="text-4xl font-black text-amber-500 mb-1">{{ $actionRate ?? 100 }}%</p>
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Action Rate</p>
             </div>
-            <div class="bg-white p-8 rounded-3xl shadow-xl border border-gray-100 flex items-center gap-6">
-                <div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 text-2xl">
-                    <i class="fas fa-university"></i>
-                </div>
-                <div>
-                    <h3 class="text-2xl font-bold text-gray-900">Official</h3>
-                    <p class="text-gray-500 text-sm">UiTM Managed</p>
-                </div>
+            
+            <div class="text-center p-4 w-full">
+                <p class="text-4xl font-black text-purple-950 mb-1">24/7</p>
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Active Monitoring</p>
+            </div>
+        </div>
+    </div>
+
+    <section class="max-w-7xl mx-auto px-6 pb-12">
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
+            <div class="text-center mb-8">
+                <h2 class="text-2xl font-black text-slate-800">Live Campus Scam Trends</h2>
+                <p class="text-sm text-slate-500 mt-1">Real-time data visualization based on active student reports.</p>
+            </div>
+            <div class="relative h-80 w-full flex justify-center">
+                <canvas id="publicScamBarChart"></canvas>
             </div>
         </div>
     </section>
 
-    <section class="py-24 max-w-7xl mx-auto px-6">
-        <div class="text-center mb-16">
-            <h2 class="text-3xl font-bold text-purple-900">How It Works</h2>
-            <div class="w-20 h-1.5 bg-yellow-400 mx-auto mt-4 rounded-full"></div>
+    <section class="max-w-7xl mx-auto px-6 pb-16">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition duration-300 group">
+                <div class="w-12 h-12 bg-purple-50 text-purple-900 rounded-xl flex items-center justify-center mb-5 group-hover:bg-purple-900 group-hover:text-white transition-all duration-300">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.24-8.73-3.41z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold text-slate-800 mb-2">100% Secure & Private</h3>
+                <p class="text-sm text-slate-500 leading-relaxed">Your Identity and private case data are fully encrypted and only visible to authorized case investigators.</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition duration-300 group">
+                <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center mb-5 group-hover:bg-amber-500 group-hover:text-slate-900 transition-all duration-300">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold text-slate-800 mb-2">Rapid Officer Assignment</h3>
+                <p class="text-sm text-slate-500 leading-relaxed">Reports are directly queued into the Auxiliary Police database dispatching immediately to active officers.</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition duration-300 group">
+                <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-5 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.33l-7.5-5-7.5 5V21m16.5 0H3.75"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold text-slate-800 mb-2">Official UiTM Governance</h3>
+                <p class="text-sm text-slate-500 leading-relaxed">Operated officially under the jurisdiction of UiTM Cawangan Perlis, Kampus Arau management structures.</p>
+            </div>
+
         </div>
+    </section>
+
+    <script>
+        const scamDataFromServer = <?php echo json_encode($scamStats ?? []); ?>;
         
-        <div class="grid md:grid-cols-3 gap-12">
-            <div class="text-center group">
-                <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-purple-900 group-hover:text-white transition-all">
-                    <span class="text-2xl font-bold">1</span>
-                </div>
-                <h4 class="font-bold text-xl mb-3">Register</h4>
-                <p class="text-gray-600">Create an account using your official UiTM student email.</p>
-            </div>
-            <div class="text-center group">
-                <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-purple-900 group-hover:text-white transition-all">
-                    <span class="text-2xl font-bold">2</span>
-                </div>
-                <h4 class="font-bold text-xl mb-3">Report Scam</h4>
-                <p class="text-gray-600">Provide details and upload evidence of the suspicious activity.</p>
-            </div>
-            <div class="text-center group">
-                <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:bg-purple-900 group-hover:text-white transition-all">
-                    <span class="text-2xl font-bold">3</span>
-                </div>
-                <h4 class="font-bold text-xl mb-3">Stay Updated</h4>
-                <p class="text-gray-600">Receive email notifications once our admins resolve the case.</p>
-            </div>
-        </div>
-    </section>
+        document.addEventListener("DOMContentLoaded", function() {
+            const ctx = document.getElementById('publicScamBarChart').getContext('2d');
+            const scamData = scamDataFromServer;
+            
+            const labels = Object.keys(scamData).length > 0 ? Object.keys(scamData) : ['Awaiting Data'];
+            const data = Object.values(scamData).length > 0 ? Object.values(scamData) : [0];
 
-    <footer class="bg-white border-t py-12">
-        <div class="max-w-7xl mx-auto px-6 text-center">
-            <div class="flex items-center justify-center gap-3 mb-6">
-                <div class="bg-gray-200 p-1.5 rounded">
-                    <i class="fas fa-shield-alt text-gray-600"></i>
-                </div>
-                <span class="font-bold text-gray-500">UiTMGuard</span>
-            </div>
-            <p class="text-gray-400 text-sm">© 2026 Universiti Teknologi MARA. Cyber Security Project.</p>
-        </div>
-    </footer>
-
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Total Reports',
+                        data: data,
+                        backgroundColor: '#f59e0b', // Amber-500 color matching theme
+                        borderRadius: 6,
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { display: false },
+                        tooltip: { enabled: true }
+                    },
+                    scales: {
+                        y: { 
+                            beginAtZero: true, 
+                            ticks: { precision: 0, color: '#94a3b8' },
+                            grid: { color: '#f1f5f9' }
+                        },
+                        x: { 
+                            ticks: { color: '#64748b', font: { weight: 'bold' } },
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>

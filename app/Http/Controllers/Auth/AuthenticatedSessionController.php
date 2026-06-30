@@ -28,6 +28,21 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        // 1. Get the authenticated user
+        $user = Auth::user();
+
+        // 2. Dynamic Role-Based Redirection
+        // Check if your users table uses an 'is_admin' boolean column
+        if (isset($user->is_admin) && $user->is_admin == 1) {
+            return redirect()->route('admin.dashboard'); // Redirect to Admin Panel
+        }
+
+        // OR check if your users table uses a string 'role' column (e.g., 'admin' vs 'student')
+        if (isset($user->role) && $user->role === 'admin') {
+            return redirect()->route('admin.dashboard'); // Redirect to Admin Panel
+        }
+
+        // 3. Default redirect for regular UiTM Student Users
         return redirect()->intended(route('dashboard', absolute: false));
     }
 

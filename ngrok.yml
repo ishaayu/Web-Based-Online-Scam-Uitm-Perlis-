@@ -1,0 +1,5 @@
+version: "2"
+tunnels:
+  uitmguard:
+    addr: 8000
+    proto: http

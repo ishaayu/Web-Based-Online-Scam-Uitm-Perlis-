@@ -1,174 +1,211 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Dashboard | UiTMGuard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style> body { font-family: 'Outfit', sans-serif; } </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - Polis Bantuan UiTM</title>
+    @include('partials.head-assets')
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 </head>
-<body class="bg-gray-100 flex h-screen overflow-hidden">
+<body class="bg-slate-50 flex flex-col md:flex-row min-h-screen font-sans antialiased">
 
-    <aside class="w-72 bg-[#2e1065] text-white flex flex-col shadow-2xl z-20">
-        <div class="h-24 flex items-center justify-center border-b border-purple-900/50">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-lg flex items-center justify-center shadow-lg">
-                    <i class="fas fa-shield-alt text-purple-900 text-xl"></i>
-                </div>
-                <span class="font-bold text-2xl tracking-wide">UiTM<span class="text-yellow-400">Guard</span></span>
+    <header class="md:hidden bg-purple-950 text-white px-6 py-4 flex justify-between items-center border-b border-purple-900 shadow-md z-30">
+        <div class="flex items-center gap-2">
+            <div class="bg-amber-400 text-purple-950 font-black px-2 py-1 rounded-lg text-sm">PB</div>
+            <span class="text-sm font-extrabold tracking-tight">POLIS BANTUAN</span>
+        </div>
+        <div class="flex items-center gap-4 text-xs font-semibold">
+            <a href="{{ route('report.index') }}" class="text-purple-200 hover:text-amber-400">History</a>
+            <a href="{{ route('report.create') }}" class="bg-amber-400 text-purple-950 px-3 py-1.5 rounded-lg font-bold">New Report</a>
+            <form method="POST" action="{{ route('logout') }}" class="inline">
+                @csrf
+                <button type="submit" class="text-red-400">Logout</button>
+            </form>
+        </div>
+    </header>
+
+    <aside class="w-64 bg-purple-950 text-white flex-col hidden md:flex justify-between shadow-xl z-20 min-h-screen">
+        <div class="p-6 flex items-center gap-3 border-b border-purple-900/50">
+            <div class="bg-amber-400 text-purple-950 font-black p-2 rounded-xl shadow-inner text-lg tracking-tight">PB</div>
+            <div>
+                <span class="text-lg font-extrabold tracking-tight block leading-none">POLIS BANTUAN</span>
+                <span class="text-xs font-semibold text-purple-300 tracking-wider uppercase">UiTM Perlis</span>
             </div>
         </div>
-        <nav class="flex-1 px-4 py-8 space-y-3">
-            <p class="px-4 text-xs font-semibold text-purple-400 uppercase tracking-wider mb-2">Main Menu</p>
-            <a href="{{ route('dashboard') }}" class="flex items-center gap-4 px-4 py-4 bg-purple-800/50 rounded-xl text-white shadow-inner border border-purple-700/50"><i class="fas fa-chart-pie w-6"></i> <span class="font-medium">Dashboard</span></a>
-            <a href="{{ route('report.index') }}" class="flex items-center gap-4 px-4 py-4 text-purple-200 hover:bg-white/10 hover:text-white rounded-xl transition-all"><i class="fas fa-folder-open w-6"></i> <span class="font-medium">My Reports</span></a>
-            <a href="{{ route('report.create') }}" class="flex items-center gap-4 px-4 py-4 text-purple-200 hover:bg-white/10 hover:text-white rounded-xl transition-all"><i class="fas fa-plus-circle w-6"></i> <span class="font-medium">New Report</span></a>
+        
+        <nav class="flex-1 p-4 space-y-2 text-sm font-medium">
+            <a href="{{ route('dashboard') }}" class="flex items-center gap-3 bg-purple-900/60 text-amber-400 px-4 py-3 rounded-xl border border-purple-800/50 transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2v-4zM14 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2v-4z"></path></svg>
+                Dashboard Overview
+            </a>
+            <a href="{{ route('report.index') }}" class="flex items-center gap-3 hover:bg-purple-900/40 px-4 py-3 rounded-xl transition text-purple-200 hover:text-white group">
+                <svg class="w-5 h-5 text-purple-400 group-hover:text-purple-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                My Case History
+            </a>
+            <a href="{{ route('report.create') }}" class="flex items-center gap-3 hover:bg-purple-900/40 px-4 py-3 rounded-xl transition text-purple-200 hover:text-white group">
+                <svg class="w-5 h-5 text-purple-400 group-hover:text-purple-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                New Report
+            </a>
         </nav>
-        <div class="p-6 border-t border-purple-900/50 bg-[#240a55]">
-            <div class="flex items-center gap-4">
-                <div class="w-12 h-12 rounded-full bg-yellow-400 flex items-center justify-center text-purple-900 font-bold text-xl">{{ substr(Auth::user()->name, 0, 1) }}</div>
-                <div class="overflow-hidden">
-                    <p class="font-bold text-white text-sm truncate w-24">{{ Auth::user()->name }}</p>
-                    <form action="{{ route('logout') }}" method="POST">@csrf <button class="text-xs text-purple-300 hover:text-yellow-400">Sign Out</button></form>
+        
+        <div class="p-4 border-t border-purple-900/50 bg-purple-950">
+            <div class="flex items-center gap-3 mb-4 px-2">
+                <div class="w-8 h-8 rounded-full bg-amber-400 text-purple-950 flex items-center justify-center font-bold uppercase shadow-sm">
+                    {{ substr(Auth::user()->name, 0, 1) }}
                 </div>
+                <span class="text-sm font-medium truncate text-purple-100">{{ Auth::user()->name }}</span>
             </div>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="w-full text-center font-semibold bg-red-500/10 hover:bg-red-500/20 px-4 py-2.5 rounded-xl text-sm text-red-400 hover:text-red-300 transition cursor-pointer">
+                    Logout
+                </button>
+            </form>
         </div>
     </aside>
 
-    <main class="flex-1 overflow-y-auto p-8">
-        <div class="w-full bg-gradient-to-r from-[#4c1d95] to-[#7c3aed] rounded-3xl p-10 text-white shadow-xl mb-10 relative overflow-hidden">
-            <h1 class="text-3xl font-bold mb-2 z-10 relative">Welcome Back, {{ Auth::user()->name }}! 👋</h1>
-            <p class="text-purple-100 z-10 relative">Here is your security overview.</p>
-            <div class="absolute right-0 top-0 h-64 w-64 bg-white/10 rounded-full -mr-16 -mt-16 blur-3xl"></div>
+    <main class="flex-1 overflow-y-auto p-4 md:p-8 relative w-full">
+        <div class="absolute top-0 right-0 w-96 h-96 bg-purple-900/5 rounded-full blur-3xl -z-10 pointer-events-none"></div>
+
+        <header class="mb-8 flex justify-between items-start">
+            <div>
+                <h1 class="text-3xl font-black text-slate-800 tracking-tight">Welcome, {{ explode(' ', Auth::user()->name)[0] }}</h1>
+                <p class="text-slate-500 text-sm">Monitor your security reports and campus analytics below.</p>
+            </div>
+
+            <div class="relative group cursor-pointer z-50">
+                <div class="bg-white p-3 rounded-full shadow-sm border border-slate-200 relative">
+                    <svg class="w-6 h-6 text-slate-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                    @if(Auth::user()->unreadNotifications->count() > 0)
+                        <span class="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full border-2 border-white animate-pulse"></span>
+                    @endif
+                </div>
+
+                <div class="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-xl border border-slate-100 p-4 hidden group-hover:block">
+                    <div class="flex justify-between items-center mb-3 border-b pb-2">
+                        <span class="font-bold text-slate-700 text-sm">Notifications</span>
+                        @if(Auth::user()->unreadNotifications->count() > 0)
+                            <form action="{{ route('notifications.read') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="text-xs text-purple-600 hover:underline">Mark all as read</button>
+                            </form>
+                        @endif
+                    </div>
+                    
+                    <div class="space-y-3 max-h-60 overflow-y-auto">
+                        @forelse(Auth::user()->unreadNotifications as $notification)
+                            <div class="bg-purple-50 p-3 rounded-lg border border-purple-100">
+                                <p class="text-xs text-slate-700 font-medium">{{ $notification->data['message'] }}</p>
+                                <a href="{{ url('/admin-summary/report/' . $notification->data['report_id']) }}" target="_blank" class="text-xs font-bold text-purple-700 mt-2 inline-block hover:underline">View Summary Report &rarr;</a>
+                            </div>
+                        @empty
+                            <p class="text-xs text-slate-400 text-center py-4">No new notifications.</p>
+                        @endforelse
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between border-l-4 border-l-amber-500 relative overflow-hidden group hover:shadow-md transition">
+                <div class="relative z-10">
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Active / Pending Investigations</p>
+                    <h2 class="text-4xl font-black text-slate-800 tracking-tight">{{ $totalPending }}</h2>
+                </div>
+                <div class="bg-amber-50 p-4 rounded-2xl text-amber-500 relative z-10">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+            </div>
+            
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between border-l-4 border-l-green-500 relative overflow-hidden group hover:shadow-md transition">
+                <div class="relative z-10">
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Cases Resolved & Closed</p>
+                    <h2 class="text-4xl font-black text-slate-800 tracking-tight">{{ $totalResolved }}</h2>
+                </div>
+                <div class="bg-green-50 p-4 rounded-2xl text-green-500 relative z-10">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+            </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div class="lg:col-span-2 bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
-                <h3 class="font-bold text-gray-800 text-xl mb-6"><i class="fas fa-chart-area text-purple-600 mr-2"></i>Analytics</h3>
-                <div class="h-64 flex justify-center"><canvas id="reportsChart"></canvas></div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-1">Your Report Analytics</h3>
+                    <p class="text-xs text-slate-400 mb-4">Breakdown of the scam categories you have reported.</p>
+                </div>
+                <div class="relative h-64 w-full flex justify-center items-center">
+                    <canvas id="scamRingChart"></canvas>
+                </div>
             </div>
-            <div class="space-y-6">
-                <div class="bg-white p-6 rounded-3xl shadow-sm border-l-8 border-yellow-400 flex justify-between items-center">
-                    <div><p class="text-gray-500 text-xs font-bold uppercase">Pending</p><p class="text-4xl font-bold text-gray-800">{{ $totalPending }}</p></div>
-                    <div class="w-12 h-12 rounded-full bg-yellow-100 text-yellow-600 flex items-center justify-center"><i class="fas fa-clock"></i></div>
+
+            <div class="bg-gradient-to-br from-purple-950 to-indigo-950 p-8 rounded-2xl shadow-lg text-white relative overflow-hidden flex flex-col justify-between">
+                <div class="absolute -right-10 -top-10 w-40 h-40 bg-amber-400/20 rounded-full blur-2xl pointer-events-none"></div>
+                
+                <div>
+                    <h3 class="text-xl font-black text-amber-400 mb-2 tracking-tight">Campus Scam Directory</h3>
+                    <p class="text-sm text-purple-200 mb-6 leading-relaxed">Cross-check suspicious phone numbers, bank accounts, or links against our campus database before proceeding with transactions.</p>
                 </div>
-                <div class="bg-white p-6 rounded-3xl shadow-sm border-l-8 border-green-500 flex justify-between items-center">
-                    <div><p class="text-gray-500 text-xs font-bold uppercase">Resolved</p><p class="text-4xl font-bold text-gray-800">{{ $totalSolved }}</p></div>
-                    <div class="w-12 h-12 rounded-full bg-green-100 text-green-600 flex items-center justify-center"><i class="fas fa-check"></i></div>
-                </div>
+                
+                <form action="#" method="GET" class="space-y-4 relative z-10">
+                    <div>
+                        <select class="w-full px-4 py-3 rounded-xl bg-purple-900/50 border border-purple-700/50 text-white text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 backdrop-blur-sm">
+                            <option>Check Phone Number</option>
+                            <option>Check Bank Account No.</option>
+                            <option>Check Website / Link URL</option>
+                        </select>
+                    </div>
+                    <div class="flex gap-2">
+                        <input type="text" placeholder="e.g. 0123456789" class="w-full px-4 py-3 rounded-xl bg-white text-slate-900 text-sm focus:outline-none border-0 shadow-inner">
+                        <button type="button" onclick="alert('This number is not flagged in the Auxiliary Police database. However, please remain vigilant.')" class="bg-amber-400 hover:bg-amber-300 text-purple-950 font-bold px-6 py-3 rounded-xl transition shadow-md whitespace-nowrap cursor-pointer">
+                            Verify
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </main>
 
     <script>
-        const ctx = document.getElementById('reportsChart');
-        if(ctx) {
+        document.addEventListener("DOMContentLoaded", function() {
+            const ctx = document.getElementById('scamRingChart').getContext('2d');
+            const scamData = <?php echo json_encode($scamStats ?? []); ?>;
+            
+            const labels = Object.keys(scamData).length > 0 ? Object.keys(scamData) : ['No Reports Filed Yet'];
+            const data = Object.values(scamData).length > 0 ? Object.values(scamData) : [1];
+            const colors = Object.keys(scamData).length > 0 
+                ? ['#f59e0b', '#3b82f6', '#8b5cf6', '#ef4444', '#10b981'] 
+                : ['#e2e8f0'];
+
             new Chart(ctx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Pending', 'Resolved', 'Other'],
+                    labels: labels,
                     datasets: [{
-                        data: [{{$totalPending}}, {{$totalSolved}}, {{max(0, $totalReports - ($totalPending+$totalSolved))}}],
-                        backgroundColor: ['#facc15', '#22c55e', '#f3f4f6'],
-                        borderWidth: 0
+                        data: data,
+                        backgroundColor: colors,
+                        borderWidth: 0,
+                        hoverOffset: 4
                     }]
                 },
-                options: { cutout: '75%', responsive: true, plugins: { legend: { position: 'bottom' } } }
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '75%',
+                    plugins: {
+                        legend: { 
+                            position: 'bottom', 
+                            labels: { 
+                                usePointStyle: true, 
+                                padding: 20, 
+                                font: { family: 'ui-sans-serif, system-ui, sans-serif', size: 11 } 
+                            } 
+                        },
+                        tooltip: { enabled: Object.keys(scamData).length > 0 }
+                    }
+                }
             });
-        }
+        });
     </script>
-
-    <div id="chat-widget" class="fixed bottom-6 right-6 z-50">
-    <button onclick="toggleChat()" class="bg-purple-700 hover:bg-purple-800 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center transition-all transform hover:scale-110">
-        <i class="fas fa-robot text-2xl"></i>
-    </button>
-
-    <div id="chat-box" class="hidden absolute bottom-16 right-0 w-80 bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden">
-        <div class="bg-purple-800 p-4 text-white flex justify-between items-center">
-            <div class="flex items-center gap-2">
-                <i class="fas fa-shield-alt"></i>
-                <span class="font-bold">UiTMGuard Bot</span>
-            </div>
-            <button onclick="toggleChat()" class="text-purple-200 hover:text-white">&times;</button>
-        </div>
-        
-        <div id="chat-messages" class="h-64 overflow-y-auto p-4 bg-gray-50 space-y-3 text-sm">
-            <div class="bg-purple-100 text-purple-900 p-3 rounded-tr-xl rounded-bl-xl rounded-br-xl w-3/4">
-                Hello! I am the automated support bot. How can I help you?
-            </div>
-            <div class="flex gap-2 flex-wrap mt-2">
-                <button onclick="askBot('report')" class="bg-white border border-purple-200 text-purple-700 px-3 py-1 rounded-full text-xs hover:bg-purple-50">How to report?</button>
-                <button onclick="askBot('status')" class="bg-white border border-purple-200 text-purple-700 px-3 py-1 rounded-full text-xs hover:bg-purple-50">Check Status</button>
-                <button onclick="askBot('emergency')" class="bg-white border border-red-200 text-red-600 px-3 py-1 rounded-full text-xs hover:bg-red-50">Urgent Help</button>
-            </div>
-        </div>
-
-        <div class="p-3 border-t bg-white flex gap-2">
-            <input type="text" id="chat-input" placeholder="Type a message..." class="w-full text-sm outline-none bg-transparent" onkeypress="handleEnter(event)">
-            <button onclick="sendMessage()" class="text-purple-700 font-bold"><i class="fas fa-paper-plane"></i></button>
-        </div>
-    </div>
-</div>
-
-<script>
-    function toggleChat() {
-        const box = document.getElementById('chat-box');
-        box.classList.toggle('hidden');
-    }
-
-    function handleEnter(e) {
-        if (e.key === 'Enter') sendMessage();
-    }
-
-    function sendMessage() {
-        const input = document.getElementById('chat-input');
-        const msg = input.value.trim();
-        if (!msg) return;
-
-        addMessage(msg, 'user');
-        input.value = '';
-
-        // Simple Rule-Based AI Logic
-        setTimeout(() => {
-            let reply = "I'm not sure about that. Please contact admin@uitm.edu.my.";
-            const lowerMsg = msg.toLowerCase();
-
-            if (lowerMsg.includes('hello') || lowerMsg.includes('hi')) reply = "Hi there! How can I assist you with UiTMGuard today?";
-            else if (lowerMsg.includes('report') || lowerMsg.includes('scam')) reply = "To report a scam, click 'New Complaint' in the sidebar and fill out the form.";
-            else if (lowerMsg.includes('status') || lowerMsg.includes('check')) reply = "You can check your report status in the 'My Reports' tab.";
-            else if (lowerMsg.includes('delete') || lowerMsg.includes('remove')) reply = "Only Admins can delete reports completely. You can edit pending reports.";
-            
-            addMessage(reply, 'bot');
-        }, 600);
-    }
-
-    function askBot(type) {
-        if (type === 'report') addMessage("How do I report a scam?", 'user');
-        if (type === 'status') addMessage("How do I check my status?", 'user');
-        if (type === 'emergency') addMessage("This is an emergency!", 'user');
-        
-        setTimeout(() => {
-            if (type === 'report') addMessage("Click 'New Complaint' on the left menu. Fill in the details and upload a screenshot.", 'bot');
-            if (type === 'status') addMessage("Go to 'My Reports'. If it says 'Pending', we are reviewing it. If 'Resolved', action has been taken.", 'bot');
-            if (type === 'emergency') addMessage("For urgent financial fraud, please call the UiTM Auxiliary Police or your Bank immediately.", 'bot');
-        }, 600);
-    }
-
-    function addMessage(text, sender) {
-        const div = document.createElement('div');
-        const classes = sender === 'user' 
-            ? ['bg-purple-600', 'text-white', 'p-3', 'rounded-tl-xl', 'rounded-bl-xl', 'rounded-br-xl', 'ml-auto', 'w-fit', 'max-w-[80%]'] 
-            : ['bg-purple-100', 'text-purple-900', 'p-3', 'rounded-tr-xl', 'rounded-bl-xl', 'rounded-br-xl', 'w-fit', 'max-w-[80%]'];
-        
-        div.classList.add(...classes);
-        div.innerText = text;
-        document.getElementById('chat-messages').appendChild(div);
-        
-        // Auto scroll to bottom
-        const container = document.getElementById('chat-messages');
-        container.scrollTop = container.scrollHeight;
-    }
-</script>
 </body>
 </html>
